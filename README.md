@@ -6,7 +6,8 @@ This is the repository in which a set of examples, problems, and solutions will 
 
 - An IDE, eg. vscode _(if you are familiar with Jupyter and would prefer that, then this can be skipped)_
 - [Python3](https://www.python.org/downloads/)
-- [Sage Maths](https://doc.sagemath.org/html/en/installation/index.html) _No development necessary._
+- [Sage Maths](https://doc.sagemath.org/html/en/installation/index.html) _(No development necessary)_
+- [git](https://git-scm.com/downloads) _(Not *strictly* necessary, but will be helpful)_
 
 If you have any troubles installing any of the above, let me know and I can lend a hand. If a large portion of the group are not comfortable with it, then I can adjust the plan to include this at the beginning.
 
