@@ -4,11 +4,11 @@ a = 5
 
 if a == 5:
     print("equality")
-elif a == 3:
+if a == 3:
     print("won't print")
-elif a != 3:
+if a != 3:
     print("inequality")
-elif a <= 6:
+if a <= 6:
     print("comparison")
 
 a_cubed = a ** 3    # or we can use ^ unlike standard python
