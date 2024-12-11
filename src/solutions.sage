@@ -1,47 +1,39 @@
+from utils import Lattice
 from sage.matrix.constructor import random_unimodular_matrix
-
-class Lattice:
-    def __init__(self):
-        self.lattice = sage.crypto.gen_lattice(m=4, seed=123937542374, lattice=true)
+from sage.modules.free_module_integer import IntegerLattice
+from sage.matrix.matrix_space import MatrixSpace
 
 
-    def __repr__(self):
-        return f"{self.lattice}"
+def quadratic_form(self):
+    '''
+    Return the corresponding quadratic form for a lattice
+
+    -----------
+    Parameters:
+    -----------
+    - self: A lattice defined by basis B
+
+    --------
+    Returns:
+    --------
+    - Q: QuadraticForm corresponding to input lattice
+
+    --------
+    Example:
+    --------
+    Q = L.corresponding_quadratic_form()
+    '''
+
+    # B = self.basis()
+    # G = B.transpose() * B
+    G = self.gram_matrix()
+    Q = QuadraticForm(G + G.transpose())
+
+    return Q
+Lattice.quadratic_form = quadratic_form
 
 
-    def __getattr__(self, name):
-        return getattr(self.lattice, name)
-
-
-    def corresponding_quadratic_form(self):
-        '''
-        Return the corresponding quadratic form for a lattice
-
-        -----------
-        Parameters:
-        -----------
-        - self: A lattice defined by basis B
-
-        --------
-        Returns:
-        --------
-        - Q: QuadraticForm corresponding to input lattice
-
-        --------
-        Example:
-        --------
-        Q = L.corresponding_quadratic_form()
-        '''
-
-        # B = self.basis()
-        # G = B.transpose() * B
-        G = self.gram_matrix()
-        Q = QuadraticForm(G + G.transpose())
-
-        return Q
-
-
-def gen_LIP_instance(d = 4):
+def gen_LIP_instance(d = 8):
     '''
     Generate a new instance of the lattice isomorphism problem
 
@@ -63,33 +55,33 @@ def gen_LIP_instance(d = 4):
     --------
     L, L_prime, U = get_LIP_instance()
     '''
-    L = Lattice()
-    Q = L.corresponding_quadratic_form().Gram_matrix()
+    # Generate a basis B for L
+    B = sage.crypto.gen_lattice()
 
-    matrix_space = sage.matrix.matrix_space.MatrixSpace(ZZ, d)
+    # Generate a random U
+    U = random_unimodular_matrix(MatrixSpace(ZZ, d))
 
-    U = random_unimodular_matrix(matrix_space)
+    # Generate an orthonormal transform
+    O = SO(d, ZZ).random_element()
 
-    Q_prime = U.transpose() * Q * U
+    B_prime = O * B * U
+    print(B_prime)
 
-    B_prime = Q_prime.cholesky()
-
-    L_prime = IntegralLattice(B_prime)
+    L_prime = IntegerLattice(B_prime)
+    L = IntegerLattice(B)
 
     return (L, L_prime, U)
 
 
 ##############################################
 #                   TESTS                    #
-#############################################
+##############################################
+L = Lattice.random(45)
 
-L = Lattice()
-
-Q = L.corresponding_quadratic_form()
-print(Q)
+Q = L.quadratic_form()
 
 (L, L_prime, U) = gen_LIP_instance()
 
-LHS = L.corresponding_quadratic_form().Gram_matrix()
-RHS = U.transpose() * L_prime.corresponding_quadratic_form().Gram_matrix() * U
+LHS = L.quadratic_form().Gram_matrix()
+RHS = U.transpose() * L_prime.quadratic_form().Gram_matrix() * U
 assert LHS == RHS
