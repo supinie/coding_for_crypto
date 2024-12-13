@@ -24,3 +24,27 @@ If you would like to get a headstart on the material we will cover, then check o
 
 - https://doc.sagemath.org/html/en/tutorial/index.html
 - https://github.com/fplll/fpylll/blob/master/docs/tutorial.rst
+
+## Contents:
+
+The `src` directory contains a number of example files, as well as an exercise file to practice what was learnt, as well as some solutions. There is also a utils file, this can be ignored and only contains a few helper functions to allow easy extension of existing classes.
+
+The example files should be covered in the following order:
+
+- basics
+- number_theory
+- linear_algebra
+- lattices
+- LLL
+- estimator
+
+## References:
+
+A lot of the examples are taken from:
+
+- [Sage guided tour](https://doc.sagemath.org/html/en/tutorial/introduction.html)
+- [Martin Albrecht's ICMS summer school workshop](https://www.icms.org.uk/sites/default/files/downloads/Masrtin%202%20%28worksheet%29.pdf)
+- [Lattice Estimator](https://lattice-estimator.readthedocs.io/en/latest/readme_link.html)
+- [Albrecht and Ducas' "Sage for Lattice-Based Cryptography](https://www.maths.ox.ac.uk/system/files/attachments/sage-introduction.pdf)
+
+If you would like to learn more, I would highly recommend reading them fully. They contain far deeper explanations of the material covered, as well as more complex topics.
