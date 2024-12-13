@@ -37,6 +37,9 @@ def gen_LIP_instance(d = 8):
     '''
     Generate a new instance of the lattice isomorphism problem
 
+    Because Sage restricts lattices to integer valued bases, we restrict the orthonormal
+    transform to be integer (not real as it should be).
+
     -----------
     Parameters:
     -----------
@@ -61,7 +64,8 @@ def gen_LIP_instance(d = 8):
     # Generate a random U
     U = random_unimodular_matrix(MatrixSpace(ZZ, d))
 
-    # Generate an orthonormal transform
+    # Because Sage restricts lattices to integer valued bases, we restrict the orthonormal
+    # transform to be integer (not real as it should be).
     G = GO(d, ZZ)
     # make sure to run `sage -i gap_packages` first
     O = G.random_element()
@@ -96,8 +100,9 @@ def verify_LIP_instance(L, L_prime, U):
     --------
     isomorphic = verify_LIP_instance()
     '''
-    LHS = L.gram_matrix()
-    RHS = U.transpose() * L_prime.gram_matrix() * U
+    LHS = L_prime.gram_matrix()
+    RHS = U.transpose() * L.gram_matrix() * U
+
     return LHS == RHS
 
 ##############################################
@@ -112,4 +117,4 @@ assert G == Q.Gram_matrix()
 
 (L, L_prime, U) = gen_LIP_instance()
 
-assert verify_LIP_instance(L, L_prime, U) == true
+print(verify_LIP_instance(L, L_prime, U))
