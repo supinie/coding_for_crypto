@@ -62,10 +62,11 @@ def gen_LIP_instance(d = 8):
     U = random_unimodular_matrix(MatrixSpace(ZZ, d))
 
     # Generate an orthonormal transform
-    O = SO(d, ZZ).random_element()
+    G = GO(d, ZZ)
+    # make sure to run `sage -i gap_packages` first
+    O = G.random_element()
 
     B_prime = O * B * U
-    print(B_prime)
 
     L_prime = IntegerLattice(B_prime)
     L = IntegerLattice(B)
@@ -73,15 +74,42 @@ def gen_LIP_instance(d = 8):
     return (L, L_prime, U)
 
 
+def verify_LIP_instance(L, L_prime, U):
+    '''
+    Verifies whether the two given lattices are indeed isomorphic with respect to the given unimodular transform.
+
+    -----------
+    Parameters:
+    -----------
+    - L: Lattice object
+    - L_prime: Lattice object
+    - U: The unimodular matrix that can be applied to the corresponding gram matrices
+        lattices L and L_prime
+
+    --------
+    Returns:
+    --------
+    - Boolean output depending on whether the two lattices are indeed isomorphic w.r.t. U.
+
+    --------
+    Example:
+    --------
+    isomorphic = verify_LIP_instance()
+    '''
+    LHS = L.gram_matrix()
+    RHS = U.transpose() * L_prime.gram_matrix() * U
+    return LHS == RHS
+
 ##############################################
 #                   TESTS                    #
 ##############################################
 L = Lattice.random(45)
 
+G = L.gram_matrix()
 Q = L.quadratic_form()
+
+assert G == Q.Gram_matrix()
 
 (L, L_prime, U) = gen_LIP_instance()
 
-LHS = L.quadratic_form().Gram_matrix()
-RHS = U.transpose() * L_prime.quadratic_form().Gram_matrix() * U
-assert LHS == RHS
+assert verify_LIP_instance(L, L_prime, U) == true
