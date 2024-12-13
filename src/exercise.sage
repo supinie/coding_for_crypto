@@ -3,6 +3,13 @@ from sage.matrix.constructor import random_unimodular_matrix
 from sage.modules.free_module_integer import IntegerLattice
 from sage.matrix.matrix_space import MatrixSpace
 
+# See below links for useful docs:
+# - https://doc.sagemath.org/html/en/reference/cryptography/sage/crypto/lattice.html#module-sage.crypto.lattice
+# - https://doc.sagemath.org/html/en/reference/quadratic_forms/sage/quadratic_forms/quadratic_form.html
+# - https://doc.sagemath.org/html/en/reference/matrices/sage/matrix/special.html#
+# - https://doc.sagemath.org/html/en/reference/modules/sage/modules/free_module_integer.html#module-sage.modules.free_module_integer
+# - https://doc.sagemath.org/html/en/reference/modules/sage/modules/free_quadratic_module_integer_symmetric.html#module-sage.modules.free_quadratic_module_integer_symmetric
+# - https://doc.sagemath.org/html/en/reference/groups/sage/groups/matrix_gps/orthogonal.html#sage.groups.matrix_gps.orthogonal.SO
 
 def quadratic_form(self):
     '''
