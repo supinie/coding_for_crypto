@@ -33,6 +33,105 @@ def quadratic_form(self):
 Lattice.quadratic_form = quadratic_form
 
 
+def gen_LWE_keys(d = 8, q = 251):
+    '''
+    Generate a basic textbook LWE keys pk = (A, b), and sk = s
+
+    -----------
+    Parameters:
+    -----------
+    - d: The dimension
+    - q: A prime number, determines F_q
+
+    --------
+    Returns:
+    --------
+    - pk: The public key, (A, b)
+    - sk: The secret key, s
+
+    --------
+    Example:
+    --------
+    pk, sk = gen_LWE_keys()
+    '''
+    
+    A = random_matrix(GF(q), d, d)
+    s = random_vector(GF(q), d)
+    e = random_vector(GF(5), d).change_ring(GF(q))  # generate in F_5 to ensure small coefficients
+
+    b = A * s + e
+
+    pk = (A, b)
+    sk = s
+
+    return pk, sk
+
+
+def LWE_encrypt(pk, message, q = 251):
+    '''
+    Encrypt a single message bit in {0, 1} using textbook LWE
+
+    -----------
+    Parameters:
+    -----------
+    - pk: The public key, (A, b)
+    - message: A single message bit (0 or 1) (theta)
+    - q
+
+    --------
+    Returns:
+    --------
+    - ciphertext: The ciphertext (v, w), where v = (x^T A)^T and w = x^Tb + theta * (q - 1)/2
+
+    --------
+    Example:
+    --------
+    c = LWE_encrypt(pk, 0)
+    '''
+
+    d = len(pk[1])  # get dimension
+    x = random_vector(GF(2), d).change_ring(GF(q))
+
+    v = (x * pk[0]).change_ring(GF(q))
+    w = x * pk[1] + (message * (q - 1)//2)
+
+    c = (v, w)
+
+    return c
+
+
+def LWE_decrypt(sk, ciphertext, q = 251):
+    '''
+    Decrypt a textbook LWE ciphertext
+
+    -----------
+    Parameters:
+    -----------
+    - sk: The secret key, s
+    - ciphertext: An LWE ciphertext, (v, w)
+    - q
+
+    --------
+    Returns:
+    --------
+    - message: returns the "rounding" of w - v^T s. If this is approx. 0, then return 0, if this is approx (q - 1)/2, then return 1.
+
+    --------
+    Example:
+    --------
+    m = LWE_decrypt(pk, 0)
+    '''
+
+    m = (ciphertext[1] - ciphertext[0] * sk) % q
+
+    dist_to_half = m - (q - 1) // 2
+
+    if m <= dist_to_half:
+        return 0
+    else:
+        return 1
+
+
 def gen_LIP_instance(d = 8):
     '''
     Generate a new instance of the lattice isomorphism problem
@@ -114,6 +213,13 @@ G = L.gram_matrix()
 Q = L.quadratic_form()
 
 assert G == Q.Gram_matrix()
+
+(pk, sk) = gen_LWE_keys()
+message = 1
+ciphertext = LWE_encrypt(pk, message)
+dec_message = LWE_decrypt(sk, ciphertext)
+
+assert dec_message == message
 
 (L, L_prime, U) = gen_LIP_instance()
 

@@ -90,7 +90,7 @@ def LWE_encrypt(pk, message):
     return c
 
 
-def LWE_decrypt(sk, ciphertext):
+def LWE_decrypt(sk, ciphertext, q = 251):
     '''
     Decrypt a textbook LWE ciphertext
 
@@ -99,6 +99,7 @@ def LWE_decrypt(sk, ciphertext):
     -----------
     - sk: The secret key, s
     - ciphertext: An LWE ciphertext, (v, w)
+    - q
 
     --------
     Returns:
@@ -181,10 +182,10 @@ Q = L.quadratic_form()
 
 assert G == Q.Gram_matrix()
 
-let pk, sk = gen_LWE_keys()
-let message = 1
-let ciphertext = LWE_encrypt(pk, message)
-let dec_message = LWE_decrypt(sk, ciphertext)
+pk, sk = gen_LWE_keys()
+message = 1
+ciphertext = LWE_encrypt(pk, message)
+dec_message = LWE_decrypt(sk, ciphertext)
 
 assert dec_message == message
 
