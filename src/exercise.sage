@@ -64,7 +64,7 @@ def gen_LWE_keys(d = 8, q = 251):
     return pk, sk
 
 
-def LWE_encrypt(pk, message):
+def LWE_encrypt(pk, message, q = 251):
     '''
     Encrypt a single message bit \in {0, 1} using textbook LWE
 

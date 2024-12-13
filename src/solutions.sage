@@ -207,6 +207,7 @@ def verify_LIP_instance(L, L_prime, U):
 ##############################################
 #                   TESTS                    #
 ##############################################
+
 L = Lattice.random(45)
 
 G = L.gram_matrix()
@@ -224,3 +225,9 @@ assert dec_message == message
 (L, L_prime, U) = gen_LIP_instance()
 
 print(verify_LIP_instance(L, L_prime, U))
+
+##############################################
+#            EXTENSION EXERCISE              #
+##############################################
+
+# Define the LWE lattice.
